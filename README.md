@@ -10,6 +10,38 @@
 #### 1. 安装 Python 依赖
 ```sh
 $ pip3 install -r requirements.txt
+
+PyMySQL
+
+pip uninstall markupsafe
+pip install markupsafe==2.0.1
+
+pip uninstall SQLAlchemy
+pip install SQLAlchemy==1.3.15
+
+pip uninstall Flask_Migrate
+pip install Flask_Migrate==2.5.3
+
+pip install bleach==4.1.0
+
+
+```
+
+flask_uploads.py
+
+from werkzeug import secure_filename,FileStorage 
+to
+from werkzeug.utils import secure_filename
+from werkzeug.datastructures import FileStorage
+```
+
+​```aiignore
+D:\Users\HJ\PycharmProjects\job-web-demo\.venv\Lib\site-packages\flask_share\__init__.py
+
+from flask import current_app, Markup ,request, Blueprint, url_for
+to
+from flask import current_app, request, Blueprint, url_for
+from markupsafe import Markup
 ```
 
 #### 2. 修改配置文件
@@ -35,6 +67,10 @@ $ flask db migrate
 $ flask db upgrade
 ```
 
+![image-20250223141105013](docs\image-20250223141105013.png)
+
+![image-20250223141520248](docs\image-20250223141520248.png)
+
 #### 5. 生成测试数据（可选）
 
 可执行 [test_data.py](https://github.com/zkqiang/job-web-demo/blob/master/data/test_data.py) 生成一些随机数据
@@ -58,3 +94,10 @@ $ flask db upgrade
 ![pic](docs/3.png '企业详情-在招岗位')
 ![pic](docs/4.png '企业管理-职位管理')
 ![pic](docs/5.png '个人管理-求职记录')
+
+# Issue
+> MySQL GROUP BY 的问题 
+> 关闭 ONLY_FULL_GROUP_BY
+> https://www.cnblogs.com/Wayou/p/mysql_group_by_issue.html
+
+

@@ -2,10 +2,20 @@
 # -*- coding: utf-8 -*-
 
 from faker import Faker
-from job_web.models import db, User, Company, Job
+from job_web.models import  User, Company, Job
 import random
 from job_web.forms import EXP, EDUCATION, FINANCE_STAGE, FIELD
 import time
+from sqlalchemy.ext.declarative import declarative_base
+from sqlalchemy import create_engine,Column,Integer,String
+from sqlalchemy.orm import sessionmaker
+
+# MySQL database URL
+SQLALCHEMY_DATABASE_URI = 'mysql+mysqldb://root:123456@192.168.60.129:3306/job_web?charset=utf8'
+engine = create_engine(SQLALCHEMY_DATABASE_URI)#建立引擎
+Base = declarative_base(engine)# 建立 sql rom基类
+session = sessionmaker(engine)() #构建session对象
+
 
 fake = Faker('zh_CN')
 fake_en = Faker()
@@ -21,8 +31,8 @@ class FakerData(object):
             c.email = fake_en.email()
             # c.phone = random.randint(13900000000, 13999999999)
             c.password = '123456'
-            db.session.add(c)
-            db.session.commit()
+            session.add(c)
+            session.commit()
 
             d = Company()
             d.name = fake.word() + fake.word() + fake.word() + fake.word()
@@ -35,8 +45,8 @@ class FakerData(object):
             d.finance_stage = random.choice(FINANCE_STAGE)
             d.description = fake.word()
             d.details = fake.word()
-            db.session.add(d)
-            db.session.commit()
+            session.add(d)
+            session.commit()
 
     def fake_job(self):
         companies = Company.query.all()
@@ -52,11 +62,16 @@ class FakerData(object):
             job.description = fake.word()
             job.treatment = fake.word()
             job.tags = '%s,%s,%s,%s' % (fake.word(), fake.word(), fake.word(), fake.word())
-            db.session.add(job)
-            db.session.commit()
+            session.add(job)
+            session.commit()
 
 
-def run():
+def runData():
     f = FakerData()
     f.fake_user()
     f.fake_job()
+
+
+if __name__ == '__main__':
+    runData()
+
